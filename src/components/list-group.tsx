@@ -1,21 +1,23 @@
 import { MouseEvent, useState } from "react";
-function ListGroup() {
-  const items = ["Hari", "Harikrishna", "krishna"];
+
+interface IProps {
+  items: any[]; //
+  heading: string; //
+  onSelectItem: (item: string, index: number) => void;
+}
+
+function ListGroup({ items, heading, onSelectItem }: IProps) {
   const msg = !items.length && <p>No items found</p>;
   const [selectedIndex, setIndex] = useState(0);
-  /**
-   * Events handle click
-   * @param event
-   * @param item
-   * @param index
-   */
-  const handleClick = (event: MouseEvent, item: unknown, index: number) => {
-    console.log(event, item, index);
+
+  const handleClick = (event: MouseEvent, index: number) => {
+    console.log(event, index);
     setIndex(index);
   };
+
   return (
     <>
-      <h1>List Group</h1>
+      <h1>{heading}</h1>
       {msg}
       <ul className="list-group">
         {items.map((item, index) => (
@@ -26,7 +28,10 @@ function ListGroup() {
                 ? "list-group-item active"
                 : "list-group-item"
             }
-            onClick={(event) => handleClick(event, item, index)}
+            onClick={(event) => {
+              handleClick(event, index);
+              onSelectItem(item, index);
+            }}
           >
             {item}
           </li>
